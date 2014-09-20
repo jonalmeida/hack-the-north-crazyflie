@@ -20,6 +20,7 @@ class SampleListener(Leap.Listener):
         self._pitch = 0;
         self._roll = 0;
         self._yaw = 0;
+        my_hover = hover.Hover(scan.getAvailable(), self);
         print "Initialized"
 
     def on_connect(self, controller):
@@ -30,6 +31,8 @@ class SampleListener(Leap.Listener):
         controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
         controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
+
+        # my_hover = hover.Hover(scan.getAvailable(), self);
 
     def on_disconnect(self, controller):
         # Note: not dispatched when running in a debugger.
@@ -170,24 +173,22 @@ class SampleListener(Leap.Listener):
         if state == Leap.Gesture.STATE_INVALID:
             return "STATE_INVALID"
 
-    def x():
-        print "x is called"
+    def x(self):
         return self._x;
 
-    def y():
-        print "y is called"
+    def y(self):
         return self._y;
 
-    def z():
+    def z(self):
         return self._z;
 
-    def pitch():
+    def pitch(self):
         return self._pitch;
 
-    def roll():
+    def roll(self):
         return self._roll;
 
-    def yaw():
+    def yaw(self):
         return self._yaw;
 
 def main():
@@ -199,7 +200,7 @@ def main():
     controller.add_listener(listener)
 
 # Thread(target=self._hover_this_shit).start()
-    my_hover = hover.Hover(scan.getAvailable(), listener)
+    # my_hover = hover.Hover(scan.getAvailable(), listener)
 
     # Keep this process running until Enter is pressed
     print "Press Enter to quit..."

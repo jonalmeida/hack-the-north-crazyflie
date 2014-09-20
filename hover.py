@@ -65,22 +65,22 @@ class Hover:
 
     def _hover_this_shit(self):
         print "Hovering this shit"
-        try:
-            while True:
-                print "asdasdasdasd"
-                # print "asdasd %s %s %s %s" % (
-                #     self._control_listener.roll()*10,
-                #     self._control_listener.pitch()*10,
-                #     self._control_listener.yaw()*100, 
-                #     self._control_listener.y()*4000)
+        # try:
+        while True:
+            print "asdasdasdasd"
+            print "asdasd %s %s %s %s" % (
+                self._control_listener.roll()*10,
+                self._control_listener.pitch()*10,
+                self._control_listener.yaw()*100, 
+                self._control_listener.y()*4000)
 
-                self._cf.commander.send_setpoint(
-                    -2, 
-                    -6, 
-                    0, 
-                    self._control_listener.y())
-                time.sleep(0.1)
-        except (KeyboardInterrupt):
-            self._cf.commander.send_setpoint(0, 0, 0, 0)
-            self._cf.close_link()
-            exit
+            self._cf.commander.send_setpoint(
+                self._control_listener.roll()*10,
+                self._control_listener.pitch()*10,
+                self._control_listener.yaw()*100, 
+                self._control_listener.y()*4000)
+            time.sleep(0.1)
+        # except (KeyboardInterrupt):
+        #     self._cf.commander.send_setpoint(0, 0, 0, 0)
+        #     self._cf.close_link()
+        #     exit
