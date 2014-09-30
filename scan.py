@@ -40,7 +40,8 @@ cflib.crtp.init_drivers(enable_debug_driver=False)
 def getAvailable():
     print "Scanning interfaces for Crazyflies..."
     available = cflib.crtp.scan_interfaces()
-    print "Crazyflies found:"
-    for i in available:
-        return i[0]
+    if available:
+        print "Crazyflies found:"
+        for i in available:
+            return i[0]
 

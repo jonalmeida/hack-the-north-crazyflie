@@ -20,7 +20,7 @@ class SampleListener(Leap.Listener):
         self._pitch = 0;
         self._roll = 0;
         self._yaw = 0;
-        my_hover = hover.Hover(scan.getAvailable(), self);
+
         print "Initialized"
 
     def on_connect(self, controller):
@@ -32,7 +32,12 @@ class SampleListener(Leap.Listener):
         controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
 
-        # my_hover = hover.Hover(scan.getAvailable(), self);
+        link_uri = scan.getAvailable()
+        if not link_uri:
+            print "No Crazyflie found in the vicinity. Nothing to do.."
+            return
+
+        my_hover = hover.Hover(scan.getAvailable(), self);
 
     def on_disconnect(self, controller):
         # Note: not dispatched when running in a debugger.
