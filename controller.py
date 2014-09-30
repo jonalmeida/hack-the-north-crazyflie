@@ -13,7 +13,7 @@ class SampleListener(Leap.Listener):
     state_names = ['STATE_INVALID', 'STATE_START', 'STATE_UPDATE', 'STATE_END']
 
     def on_init(self, controller):
-        print "controller on_init called"
+        print "Leap Initialized"
         self._x = 0;
         self._y = 0;
         self._z = 0;
@@ -24,7 +24,7 @@ class SampleListener(Leap.Listener):
         print "Initialized"
 
     def on_connect(self, controller):
-        print "Connected"
+        print "Leap Connected"
 
         # Enable gestures
         controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
@@ -36,15 +36,15 @@ class SampleListener(Leap.Listener):
         if not link_uri:
             print "No Crazyflie found in the vicinity. Nothing to do.."
             return
-
-        my_hover = hover.Hover(scan.getAvailable(), self);
+        # Don't bother getting here because we have quad to control
+        my_hover = hover.Hover(link_uri, self);
 
     def on_disconnect(self, controller):
         # Note: not dispatched when running in a debugger.
-        print "Disconnected"
+        print "Leap Disconnected"
 
     def on_exit(self, controller):
-        print "Exited"
+        print "Leap Exited"
 
     def on_frame(self, controller):
         # Get the most recent frame and report some basic information
@@ -56,6 +56,17 @@ class SampleListener(Leap.Listener):
         i_box = frame.interaction_box
         hand_of_interest = frame.hands[0]
 
+        # for hand in frame.hands:
+        #     print "  %s, id %d, position: %s" % (
+        #         handType, hand.id, hand.palm_position)
+
+        #     normal = hand.palm_normal
+        #     direction = hand.direction
+        #     print "  pitch: %f degrees, roll: %f degrees, yaw: %f degrees" % (
+        #         direction.pitch * Leap.RAD_TO_DEG,
+        #         normal.roll * Leap.RAD_TO_DEG,
+        #         direction.yaw * Leap.RAD_TO_DEG)
+
         normalized_hand = i_box.normalize_point(hand_of_interest.fingers[0].tip_position)
 
         # print "id %d, position:\t x - %s,\t y - %s,\t z - %s, " % (
@@ -64,15 +75,21 @@ class SampleListener(Leap.Listener):
         #     normalized_hand.y,
         #     normalized_hand.z)
 
-        # # Get the hand's normal vector and direction
-        # normal = hand_of_interest.palm_normal
-        # direction = hand_of_interest.direction
+        # Get the hand's normal vector and direction
+        normal = hand_of_interest.palm_normal
+        direction = hand_of_interest.direction
 
         # print "id %d position:\t p - %f,\t r - %f,\t y - %f, " % (
         #     frame.id, 
-        #     direction.pitch * Leap.RAD_TO_DEG,
-        #     normal.roll * Leap.RAD_TO_DEG,
-        #     direction.yaw * Leap.RAD_TO_DEG)
+        #     direction.pitch,
+        #     normal.roll,
+        #     direction.yaw)
+
+        self._pitch = direction.pitch
+        self._roll = normal.roll
+        self._yaw = direction.yaw
+
+        self._y = normalized_hand.y
 
         # Get hands
         # for hand in frame.hands:
