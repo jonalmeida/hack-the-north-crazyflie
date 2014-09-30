@@ -71,13 +71,18 @@ class Hover:
                 int(self._control_listener.roll()*10),
                 int(self._control_listener.pitch()*10),
                 int(self._control_listener.yaw()*100), 
-                int(self._control_listener.y() * 40000))
+                int(self._control_listener.y() * 47000))
 
             self._cf.commander.send_setpoint(
                 int(self._control_listener.roll()*10),
                 int(self._control_listener.pitch()*10),
                 int(self._control_listener.yaw()*100), 
-                int(self._control_listener.y() * 40000))
+                int(self._control_listener.y() * 47000))
+            # self._cf.commander.send_setpoint(
+            #     0,
+            #     0,
+            #     0, 
+            #     int(self._control_listener.y() * 47000))
             time.sleep(0.1)
         # except (KeyboardInterrupt):
         #     self._cf.commander.send_setpoint(0, 0, 0, 0)
