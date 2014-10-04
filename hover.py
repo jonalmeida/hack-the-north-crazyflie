@@ -13,9 +13,9 @@ import logging
 logging.basicConfig(level=logging.ERROR)
 
 class Hover:
-    def __init__(self, link_uri, control_listener):
+    def __init__(self, link_uri, control_listener, config=None):
         """ Initialize and run the example with the specified link_uri """
-
+        self._config = config
         self._cf = Crazyflie()
 
         self._control_listener = control_listener
@@ -39,9 +39,21 @@ class Hover:
 
     def _connection_failed(self, link_uri, msg):
         print "Connection to %s failed: %s" % (link_uri, msg)
+        if "reconnect" in self._config:
+            print "Attempting reconnect.."
+            if self._config["reconnect"]:
+                self._cf.open_link(link_uri)
+        else:
+            sys.exit(2)
 
     def _connection_lost(self, link_uri, msg):
         print "Connection to %s lost: %s" % (link_uri, msg)
+        if "reconnect" in self._config:
+            print "Attempting reconnect.."
+            if self._config["reconnect"]:
+                self._cf.open_link(link_uri)
+        else:
+            sys.exit(3)
 
     # def _hover_this_shit(self):
     #     print "Hovering this shit"

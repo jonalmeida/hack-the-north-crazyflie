@@ -1,4 +1,4 @@
-import os, sys, inspect, thread, time
+import os, sys, inspect, thread, time, getopt
 
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
@@ -7,19 +7,24 @@ import scan
 
 from threading import Thread
 
+# Configuration dictionary
+config = {}
+
+
 class SampleListener(Leap.Listener):
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
     bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
     state_names = ['STATE_INVALID', 'STATE_START', 'STATE_UPDATE', 'STATE_END']
+    global config
 
     def on_init(self, controller):
         print "Leap Initialized"
-        self._x = 0;
-        self._y = 0;
-        self._z = 0;
-        self._pitch = 0;
-        self._roll = 0;
-        self._yaw = 0;
+        self._x = 0
+        self._y = 0
+        self._z = 0
+        self._pitch = 0
+        self._roll = 0
+        self._yaw = 0
 
         print "Initialized"
 
@@ -37,7 +42,7 @@ class SampleListener(Leap.Listener):
             print "No Crazyflie found in the vicinity. Nothing to do.."
             return
         # Don't bother getting here because we have quad to control
-        my_hover = hover.Hover(link_uri, self);
+        my_hover = hover.Hover(link_uri, self, config);
 
     def on_disconnect(self, controller):
         # Note: not dispatched when running in a debugger.
@@ -213,16 +218,25 @@ class SampleListener(Leap.Listener):
     def yaw(self):
         return self._yaw;
 
-def main():
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "rh", ["reconnect", "help"])
+    except getopt.GetoptError as err:
+        sys.exit(1)
+
+    for opt, arg in opts:
+        if opt in ("-r", "--reconnect"):
+            print "Auto-reconnect enabled"
+            config["reconnect"] = True
+        elif opt in ("-h", "--help"):
+            print "No help menu yet, read code instead."
+
     # Create a sample listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
 
     # Have the sample listener receive events from the controller
     controller.add_listener(listener)
-
-# Thread(target=self._hover_this_shit).start()
-    # my_hover = hover.Hover(scan.getAvailable(), listener)
 
     # Keep this process running until Enter is pressed
     print "Press Enter to quit..."
@@ -236,4 +250,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
