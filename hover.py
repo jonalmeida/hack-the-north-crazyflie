@@ -3,7 +3,7 @@ import time, sys
 from threading import Thread
 
 #FIXME: Has to be launched from within the example folder
-sys.path.append("/home/jonathan/cfclient-2014.01.0/lib")
+sys.path.append("/home/jonathan/Programs/crazyflie/cfclient-2014.01.0/lib")
 import cflib
 from cflib.crazyflie import Crazyflie
 
@@ -39,10 +39,11 @@ class Hover:
 
     def _connection_failed(self, link_uri, msg):
         print "Connection to %s failed: %s" % (link_uri, msg)
-        if "reconnect" in self._config:
-            print "Attempting reconnect.."
-            if self._config["reconnect"]:
-                self._cf.open_link(link_uri)
+        if not self._config:
+            if "reconnect" in self._config:
+                print "Attempting reconnect.."
+                if self._config["reconnect"]:
+                    self._cf.open_link(link_uri)
         else:
             sys.exit(2)
 
@@ -82,18 +83,18 @@ class Hover:
             print "asdasd %s %s %s %d" % (
                 int(self._control_listener.roll()*10),
                 int(self._control_listener.pitch()*10),
-                int(self._control_listener.yaw()*100), 
+                int(self._control_listener.yaw()*100),
                 int(self._control_listener.y() * 47000))
 
             self._cf.commander.send_setpoint(
                 int(self._control_listener.roll()*10),
                 int(self._control_listener.pitch()*10),
-                int(self._control_listener.yaw()*100), 
+                int(self._control_listener.yaw()*100),
                 int(self._control_listener.y() * 47000))
             # self._cf.commander.send_setpoint(
             #     0,
             #     0,
-            #     0, 
+            #     0,
             #     int(self._control_listener.y() * 47000))
             time.sleep(0.1)
         # except (KeyboardInterrupt):
