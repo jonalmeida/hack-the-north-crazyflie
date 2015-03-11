@@ -1,3 +1,6 @@
+# When I wrote this, only God and I understood what I was doing
+# Now, God only knows
+
 import os, sys, inspect, thread, time, getopt
 
 import Leap
@@ -75,7 +78,7 @@ class SampleListener(Leap.Listener):
         normalized_hand = i_box.normalize_point(hand_of_interest.fingers[0].tip_position)
 
         # print "id %d, position:\t x - %s,\t y - %s,\t z - %s, " % (
-        #     frame.id, 
+        #     frame.id,
         #     normalized_hand.x,
         #     normalized_hand.y,
         #     normalized_hand.z)
@@ -85,7 +88,7 @@ class SampleListener(Leap.Listener):
         direction = hand_of_interest.direction
 
         # print "id %d position:\t p - %f,\t r - %f,\t y - %f, " % (
-        #     frame.id, 
+        #     frame.id,
         #     direction.pitch,
         #     normal.roll,
         #     direction.yaw)
